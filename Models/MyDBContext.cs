@@ -4,9 +4,7 @@ namespace CoreAppPlayGround.Models
 {
     public partial class MyDbContext : DbContext
     {
-        public MyDbContext()
-        {
-        }
+        private DbContext _dbContext;
 
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
@@ -14,6 +12,11 @@ namespace CoreAppPlayGround.Models
         }
 
         public virtual DbSet<User> Users { get; set; } = null!;
+
+        public virtual async Task<T> GetByIdAsync<T>(int id) where T : class
+        {
+            return await _dbContext.FindAsync<T>(id);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

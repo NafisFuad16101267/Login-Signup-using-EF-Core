@@ -1,4 +1,5 @@
 using CoreAppPlayGround.Models;
+using CoreAppPlayGround.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -8,10 +9,12 @@ namespace CoreAppPlayGround.Controllers
     public class HomeController : Controller
     {
         private readonly MyDbContext context;
+        private readonly IGenericRepository<User> _genericRepository;
 
-        public HomeController(MyDbContext context)
+        public HomeController(MyDbContext context, IGenericRepository<User> genericRepository)
         {
             this.context = context;
+            _genericRepository = genericRepository;
         }
 
         public IActionResult Index()
@@ -27,9 +30,9 @@ namespace CoreAppPlayGround.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(User u)
+        public async Task<IActionResult> Login(User u)
         {
-            var myUser = context.Users.Where(x => x.Email == u.Email && x.Password == u.Password).FirstOrDefault();
+            var myUser = await _genericRepository.FindAsync(x => x.Email == u.Email && x.Password == u.Password);
             if (myUser != null)
             {
                 HttpContext.Session.SetString("UserSession", myUser.EmpName);
