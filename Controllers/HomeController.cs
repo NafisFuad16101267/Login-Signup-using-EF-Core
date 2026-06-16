@@ -60,8 +60,10 @@ namespace CoreAppPlayGround.Controllers
         {
             if (ModelState.IsValid)
             {
-                await context.Users.AddAsync(u);
-                await context.SaveChangesAsync();
+                await _genericRepository.AddAsync(u);
+                await _genericRepository.SaveAsync();
+                //await context.Users.AddAsync(u);
+                //await context.SaveChangesAsync();
                 TempData["Success"] = "Registered Successfully";
                 return RedirectToAction("Login");
             }
