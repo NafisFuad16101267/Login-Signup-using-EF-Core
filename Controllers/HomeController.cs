@@ -64,7 +64,7 @@ namespace CoreAppPlayGround.Controllers
                 await _genericRepository.SaveAsync();
                 //await context.Users.AddAsync(u);
                 //await context.SaveChangesAsync();
-                TempData["Success"] = "Registered Successfully";
+                TempData["SuccessMessage"] = "Registration successful! Please log in.";
                 return RedirectToAction("Login");
             }
             return View();
